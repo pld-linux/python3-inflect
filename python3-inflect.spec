@@ -7,16 +7,16 @@
 Summary:	Correctly generate plurals, singular nouns, ordinals, indefinite articles
 Summary(pl.UTF-8):	Poprawne generowanie liczby mnogiej i pojedynczej, liczebników, przedimków nieokreślonych
 Name:		python3-inflect
-Version:	5.4.0
-Release:	3
+Version:	5.6.2
+Release:	1
 License:	MIT
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/inflect/
 Source0:	https://files.pythonhosted.org/packages/source/i/inflect/inflect-%{version}.tar.gz
-# Source0-md5:	98e2983eba8db51c77adace0bc16b711
+# Source0-md5:	5d31c25bc1f16af445560d3a12ed7208
 URL:		https://pypi.org/project/inflect/
 BuildRequires:	python3-modules >= 1:3.7
-BuildRequires:	python3-setuptools >= 1:31.0.1
+BuildRequires:	python3-setuptools >= 1:56
 BuildRequires:	python3-setuptools_scm >= 3.4.1
 BuildRequires:	python3-toml
 %if %{with tests}
@@ -25,14 +25,14 @@ BuildRequires:	python3-pytest >= 6
 BuildRequires:	python3-pytest-black >= 0.3.7
 #BuildRequires:	python3-pytest-checkdocs >= 2.4
 BuildRequires:	python3-pytest-cov
-BuildRequires:	python3-pytest-enabler >= 1.0.1
+#BuildRequires:	python3-pytest-enabler >= 1.3
 BuildRequires:	python3-pytest-flake8
-BuildRequires:	python3-pytest-mypy
+#BuildRequires:	python3-pytest-mypy >= 0.9.1
 %endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
 %if %{with doc}
-BuildRequires:	python3-jaraco.packaging >= 8.2
+BuildRequires:	python3-jaraco.packaging >= 9
 BuildRequires:	python3-jaraco.tidelift >= 1.4
 BuildRequires:	python3-rst.linker >= 1.9
 BuildRequires:	sphinx-pdg-3
@@ -63,17 +63,19 @@ Dokumentacja API modułu Pythona inflect.
 %prep
 %setup -q -n inflect-%{version}
 
+cat >setup.py <<EOF
+from setuptools import setup
+setup()
+EOF
+
 %build
 %py3_build
 
 %if %{with tests}
-ln -snf ../tests build-3/tests
-cd build-3
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
 PYTEST_PLUGINS=pytest_black_multipy,pytest_flake8,pytest_cov.plugin \
-PYTHONPATH=$(echo $(pwd)/build-3/lib) \
+PYTHONPATH=$(pwd) \
 %{__python3} -m pytest tests
-cd ..
 %endif
 
 %if %{with doc}
