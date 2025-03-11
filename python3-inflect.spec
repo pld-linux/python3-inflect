@@ -8,7 +8,7 @@ Summary:	Correctly generate plurals, singular nouns, ordinals, indefinite articl
 Summary(pl.UTF-8):	Poprawne generowanie liczby mnogiej i pojedynczej, liczebników, przedimków nieokreślonych
 Name:		python3-inflect
 Version:	5.6.2
-Release:	2
+Release:	3
 License:	MIT
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/inflect/
